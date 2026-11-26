@@ -982,13 +982,13 @@
 
         <h2 style="font-size: 1.8rem; border-bottom: 2px solid #4a90e2; padding-bottom: 10px; margin-top: 40px;" data-i18n="dirs.title">Download Directory</h2>
         <p style="font-size: 1.1rem; line-height: 1.6; opacity: 0.9;" data-i18n="dirs.binaries">
-            Installed binaries are stored in (options):
+            The installer goes to <code class="ic">/opt/macwave</code>. These are the alternatives, chosen with <code class="ic">--dir-option</code>:
         </p>
         <div class="code-container">
-            <pre>1. /opt/macwave
-2. ~/.local/macwave
-3. /usr/local/macwave (Only Intel Mac)
-4. Custom</pre>
+            <pre>1. /opt/macwave                default
+2. ~/.local/macwave            this user only, no password
+3. /usr/local/macwave          Intel Macs only
+4. a directory of your own     --dir-option=4=/some/dir  (3 on Apple silicon)</pre>
         </div>
         <p style="font-size: 1.1rem; line-height: 1.6; opacity: 0.9;" data-i18n="dirs.config">
             Config file is stored in (a system-level install always takes priority):
@@ -1237,8 +1237,9 @@ bin  libexec  share</pre>
         <!-- 用户协议：正文不在这里，见 agreement/ 下按语言命名的文件
          （agreement.md 为英文，其余 agreement-<lang>.md，映射见 AGREEMENT_FILES）。
          点下面那个按钮就地阅读；没有 JS 时给一条直链。正文单独成文件有两个好处：
-         页面不再背着 12 KB 的静态文本，而且终端可以 curl 直接读到 ——
-         安装器与自更新都指到这里。 -->
+         页面不再背着 12 KB 的静态文本，而且终端可以 curl 直接读到。
+         注意：安装器从 4.7 起**不再**弹出协议确认（那道闸门已删除），所以这里是
+         「使用即表示接受」的告知，不是安装流程里的一步。 -->
     <div class="disclaimer-container" id="agreement">
         <div class="disclaimer">
             <p data-i18n="agreement.notice">

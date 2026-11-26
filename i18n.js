@@ -29,7 +29,7 @@ window.MACWAVE_I18N = {
     'uninstall.title': '卸载 MacWave',
     'uninstall.body': '要从系统中彻底移除 MacWave，请在终端中运行以下命令：',
     'dirs.title': '下载目录',
-    'dirs.binaries': '已安装的二进制文件存储于（可选）：',
+    'dirs.binaries': '安装器默认装到 <code class="ic">/opt/macwave</code>。下面这些是备选位置，用 <code class="ic">--dir-option</code> 指定：',
     'dirs.config': '配置文件存储于（系统级安装始终优先）：',
     'pkgInstall.title': '安装软件包',
     'pkgInstall.body': '一条命令完成下载、校验、解包与链接，装之前先核对 SHA256：',
