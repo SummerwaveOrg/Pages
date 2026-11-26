@@ -831,7 +831,7 @@
             macOS Monterey 12 and above
         </p>
 
-        <h2 style="font-size: 1.8rem; border-bottom: 2px solid #4a90e2; padding-bottom: 10px; margin-top: 40px;" data-i18n="install.title">Install MacWave</h2>
+        <h2 style="font-size: 1.8rem; border-bottom: 2px solid #4a90e2; padding-bottom: 10px; margin-top: 40px;" data-i18n="install.title">Install Summerwave</h2>
 
         <p style="font-size: 1.1rem; line-height: 1.6; opacity: 0.9;" data-i18n="install.prompt">
             In the terminal, run:
@@ -845,6 +845,12 @@
             </button>
             <pre><span class="code-dollar">$</span> /bin/bash -c "$(curl -fsSL https://github.com/MacWaveOrg/MacWave/releases/latest/download/install.sh)"</pre>
         </div>
+        <p class="env-requirements" data-i18n="install.target">
+            It installs into <code class="ic">/opt/macwave</code>, the system-wide location (one administrator password, entered once).
+            Nothing is written before it tells you that path and asks a single question — answer <code class="ic">n</code> and it exits
+            without touching anything. Prefer a per-user install? Add <code class="ic">--dir-option=2</code> for
+            <code class="ic">~/.local/macwave</code>.
+        </p>
         <p style="margin: 10px 0 0 0; font-size: 1rem; line-height: 1.5; color: #a0b0d0; font-style: italic;" data-i18n="install.bashNote">
             (If you are using bash instead of zsh, run <code class="ic">source ~/.bashrc</code>)
         </p>
@@ -857,12 +863,12 @@
         <div class="split2">
             <figure>
                 <img src="images/demo2.gif" width="780" height="536" loading="lazy"
-                     alt="Running the MacWave installer: it picks an install directory, fetches the update commands and the bundled Python environment, and asks for the licence once.">
+                     alt="Running the Summerwave installer: it states the install path, asks once to confirm, then fetches the update commands and the bundled Python environment.">
             </figure>
             <div class="split2-side">
                 <p class="env-requirements" data-i18n="install.requirements">
                     Requirements: macOS Monterey 12 or later, Xcode Command Line Tools.<br>
-                    You do not need to install Python — MacWave bundles its own interpreter.
+                    You do not need to install Python — Summerwave bundles its own interpreter.
                 </p>
 
                 <p class="env-requirements" data-i18n="install.sourceNote">
@@ -888,11 +894,24 @@
   -- --ci --dir-option=1</pre>
         </div>
         <p style="font-size: 1.1rem; line-height: 1.6; opacity: 0.9;" data-i18n="unattended.flags">
-            <code class="ic">--ci</code> (same as <code class="ic">--CI</code>) answers the directory menu and the agreement automatically. It needs passwordless sudo, or root, when the chosen directory requires privilege. <code class="ic">--dir-option=N</code> picks menu entry <code class="ic">N</code> (1-4 on Intel, 1-3 on Apple silicon); for the custom entry, append the path after <code class="ic">=</code>, as in <code class="ic">--dir-option=4=/opt/my-macwave</code>. Three more arrived in 4.4: <code class="ic">--raw</code> (no ASCII art, no colour, no spinner; '
-          'one <code class="ic">####</code> line per 10% of a download), <code class="ic">--print-usage</code> '
-          '(prints usage, then installs anyway) and <code class="ic">--skip-probe</code> (skips the write probe and '
-          'goes by permission bits alone). <code class="ic">--help</code> prints usage and stops, and no longer touches '
-          'the network. Run <code class="ic">install.sh --help</code> for the list.
+            <code class="ic">--ci</code> (same as <code class="ic">--CI</code>) asks nothing: no confirmation, no
+            questions. Without <code class="ic">--dir-option</code> it installs into <code class="ic">~/.local/macwave</code>,
+            because an unattended run must not stop for an administrator password; add <code class="ic">--dir-option=1</code>
+            for <code class="ic">/opt/macwave</code>, which then needs passwordless sudo (or root).
+            <code class="ic">--dir-option=N</code> picks the install location: <code class="ic">1</code> is
+            <code class="ic">/opt/macwave</code>, <code class="ic">2</code> is <code class="ic">~/.local/macwave</code>,
+            <code class="ic">3</code> is <code class="ic">/usr/local/macwave</code> on Intel, and the last number is the
+            custom entry — append the path after <code class="ic">=</code>, as in
+            <code class="ic">--dir-option=3=/opt/my-summerwave</code>.
+            <code class="ic">--zh</code> and <code class="ic">--en</code> force Chinese or English output; without them the
+            installer follows <code class="ic">LC_ALL</code> / <code class="ic">LANG</code> and the macOS preferred
+            language, so a Chinese machine is spoken to in Chinese by default.
+            <code class="ic">--dry-run</code> walks every step and prints it without downloading, asking for a password or
+            writing a byte. <code class="ic">--raw</code> drops the ASCII art, colour and spinner (one
+            <code class="ic">####</code> line per 10% of a download) for logs. <code class="ic">--print-usage</code>
+            prints usage and installs anyway; <code class="ic">--skip-probe</code> skips the write probe and goes by
+            permission bits alone; <code class="ic">--help</code> prints usage and stops without touching the network.
+            Run <code class="ic">install.sh --help</code> for the list.
         </p>
 
         <p class="install-note" data-i18n="unattended.position">
@@ -925,9 +944,13 @@
         </p>
 
         <p style="margin: 10px 0 0 0; font-size: 1rem; line-height: 1.5; color: #a0b0d0; font-style: italic;" data-i18n="verify.selfupdate">
-            MacWave checks its own updates too (the pointer file carries a signature and every downloaded
-            file carries a checksum). Since 4.4 that check is <strong>experimental</strong>: a mismatch warns
-            and continues, and <code class="ic">MACWAVE_STRICT_HASHES=1</code> turns it into a failure.
+            Summerwave checks its own updates too, and since 4.7 that check is <strong>mandatory</strong>: the
+            version pointer must carry a signature from the project's key, and a missing or wrong signature
+            <strong>stops the installation</strong> instead of warning. The reason is that this pointer decides which
+            version and which code branch get installed — if it could be swapped, checking every downloaded file
+            against it would be pointless, because the list could be swapped along with it.
+            <code class="ic">MACWAVE_ALLOW_UNSIGNED=1</code> exists for mirror bootstrap and test rigs only; do not set
+            it on a machine you care about.
         </p>
 
         <p style="font-size: 1.1rem; line-height: 1.6; opacity: 0.9;" data-i18n="verify.uninstallScript">
