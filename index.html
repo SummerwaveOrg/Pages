@@ -810,8 +810,7 @@
             <li><strong>Versioned by design.</strong> Every binary lives under <code class="ic">package@version</code>, so several versions coexist and none of them shadow a system tool.</li>
             <li><strong>Optional unversioned links.</strong> <code class="ic">wave link &lt;package&gt;</code> creates a plain <code class="ic">package</code> shortcut that points at the highest installed version and re-points itself whenever versions are installed or removed.</li>
             <li><strong>Isolated by construction.</strong> Everything Summerwave installs stays inside its own directories; it never overwrites or links against macOS system libraries, so even a major macOS upgrade leaves it intact.</li>
-            <li><strong>No stale metadata.</strong> Package data is read from the <code class="ic">SummerwaveOrg/infosource</code> repository at request time.</li>
-            <li><strong>Ten archive formats, covered by CI.</strong> Extensionless binaries, <code class="ic">.zip</code>, <code class="ic">.tar.gz</code>, <code class="ic">.tar.bz2</code>, <code class="ic">.tar.xz</code>, <code class="ic">.tar</code>, <code class="ic">.gz</code>, <code class="ic">.xz</code>, <code class="ic">.bz2</code>, and <code class="ic">.conda</code>.</li>
+            <li><strong>No stale metadata.</strong> Package data is read from the <code class="ic">SummerwaveOrg/SeaLane</code> repository at request time.</li>
             <li><strong>Checksum before extraction.</strong> A package whose SHA256 is missing or does not match is refused, never installed with a warning.</li>
             <li><strong>Resumable downloads.</strong> An interrupted transfer continues with <code class="ic">-C</code>.</li>
             <li><strong>Transparent implementation.</strong> Python and Shell only. The interpreter is bundled, so no runtime has to be installed and no behaviour is hidden behind one.</li>
