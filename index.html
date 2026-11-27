@@ -439,32 +439,42 @@
             }
         }
 
-        /* ===== 支持的软件包：左右两列，按行从左到右（1 2 / 3 4 / …） ===== */
+        /* ===== 支持的软件包：字母序**顺着列往下走**（读完一列再读下一列） =====
+           用多列布局而不是 grid：grid 是按行填的，宽屏上会变成「第一行 1 2 3 4 5」，
+           而人是竖着扫的 —— 眼睛往下走，序号却在横着跳。columns 让内容先填满第一列，
+           再开第二列，字母序与阅读方向一致。 */
         .pkg-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            columns: 4;
+            column-gap: 24px;
+            column-rule: 1px solid #2c3a5c;
             width: 100%;
-            gap: 6px 24px;
             background-color: #1e2a4a;
             border: 1px solid #3a4a6a;
             border-radius: 12px;
             padding: 20px;
             font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
             font-size: 0.9rem;
+            line-height: 1.5;
             color: #d4d4d4;
             text-align: left;
         }
 
         .pkg-list span {
+            display: block;
+            break-inside: avoid;
             min-width: 0;
             overflow-wrap: anywhere;
         }
 
-        /* 手机端单列，长包名不被挤断 */
+        @media (max-width: 1000px) {
+            .pkg-list { columns: 3; }
+        }
+
+        /* 窄屏两列；长包名靠 overflow-wrap 断开，不挤成竖排 */
         @media (max-width: 560px) {
             .pkg-list {
-                grid-template-columns: 1fr;
-                gap: 4px 8px;
+                columns: 2;
+                column-gap: 12px;
                 padding: 14px;
                 font-size: 0.82rem;
             }
