@@ -442,12 +442,9 @@
         /* ===== 支持的软件包：左右两列，按行从左到右（1 2 / 3 4 / …） ===== */
         .pkg-list {
             display: grid;
-            grid-template-columns: repeat(3, max-content);
-            justify-content: center;
-            width: fit-content;
-            max-width: 100%;
-            margin: 0 auto;
-            gap: 6px 28px;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            width: 100%;
+            gap: 6px 24px;
             background-color: #1e2a4a;
             border: 1px solid #3a4a6a;
             border-radius: 12px;
@@ -463,18 +460,10 @@
             overflow-wrap: anywhere;
         }
 
-        /* 列数随屏宽：宽屏 3 列 → 中屏 2 列 → 手机 1 列 */
-        @media (max-width: 820px) {
-            .pkg-list {
-                grid-template-columns: repeat(2, max-content);
-            }
-        }
-
+        /* 手机端单列，长包名不被挤断 */
         @media (max-width: 560px) {
             .pkg-list {
                 grid-template-columns: 1fr;
-                justify-content: start;
-                width: 100%;
                 gap: 4px 8px;
                 padding: 14px;
                 font-size: 0.82rem;
@@ -797,8 +786,8 @@
         <p class="tagline" data-i18n="hero.tagline">A package manager for macOS, built for the command-line tools macOS developers rely on.</p>
 
         <div class="version-block" data-i18n="version.block">
-            <span class="v-line">Latest Version : 4.6.0</span>
-            <span class="v-line">Release on 2026-11-24</span>
+            <span class="v-line">Latest Version : 0.1.0</span>
+            <span class="v-line">Release on 2026-11-27</span>
         </div>
 
         <div class="hero__actions">
@@ -849,12 +838,6 @@
             </button>
             <pre><span class="code-dollar">$</span> /bin/bash -c "$(curl -fsSL https://github.com/SummerwaveOrg/Summerwave/releases/latest/download/install.sh)"</pre>
         </div>
-        <p class="env-requirements" data-i18n="install.target">
-            It installs into <code class="ic">/opt/macwave</code>, the system-wide location (one administrator password, entered once).
-            Nothing is written before it tells you that path and asks a single question — answer <code class="ic">n</code> and it exits
-            without touching anything. Prefer a per-user install? Add <code class="ic">--dir-option=2</code> for
-            <code class="ic">~/.local/macwave</code>.
-        </p>
         <p style="margin: 10px 0 0 0; font-size: 1rem; line-height: 1.5; color: #a0b0d0; font-style: italic;" data-i18n="install.bashNote">
             (If you are using bash instead of zsh, run <code class="ic">source ~/.bashrc</code>)
         </p>
@@ -871,7 +854,7 @@
             </figure>
             <div class="split2-side">
                 <p class="env-requirements" data-i18n="install.requirements">
-                    Requirements: macOS Monterey 12 or later, Xcode Command Line Tools.<br>
+                    Requirements: Intel — macOS Monterey 12 or later; Apple Silicon — macOS Sequoia 15 or later; Xcode Command Line Tools.<br>
                     You do not need to install Python — Summerwave bundles its own interpreter.
                 </p>
 
@@ -938,42 +921,6 @@ Linux: /home/linuxwave/.linuxwave</pre>
                 </p>
             </div>
         </div>
-
-        <h2 style="font-size: 1.8rem; border-bottom: 2px solid #4a90e2; padding-bottom: 10px; margin-top: 40px;" data-i18n="pkgRun.title">Run Packages</h2>
-        <p style="font-size: 1.1rem; line-height: 1.6; opacity: 0.9;" data-i18n="pkgRun.body">
-            Once installed, a package is on your <code class="ic">PATH</code>. Just type its name:
-        </p>
-        <div class="code-container">
-            <pre><span class="code-dollar">$</span> {package_name}</pre>
-        </div>
-        <p style="font-size: 1.1rem; line-height: 1.6; opacity: 0.9;" data-i18n="pkgRun.link">
-            <code class="ic">wave install</code> creates that name for you, so there is no extra step. When several versions are installed and you want one of them specifically, add the version:
-        </p>
-        <div class="code-container">
-            <pre><span class="code-dollar">$</span> {package_name}@{version}</pre>
-        </div>
-        <p style="font-size: 1.1rem; line-height: 1.6; opacity: 0.9;" data-i18n="pkgRun.nolink">
-            If you installed with <code class="ic">--no-link</code>, that name was skipped on purpose — run <code class="ic">wave link {package_name}</code> once to bring it back.
-        </p>
-
-        <h2 style="font-size: 1.8rem; border-bottom: 2px solid #4a90e2; padding-bottom: 10px; margin-top: 40px;" data-i18n="installForm.title">Two Install Forms: One File or a Whole Tree</h2>
-        <p style="font-size: 1.1rem; line-height: 1.6; opacity: 0.9;" data-i18n="installForm.intro">
-            Most packages are a single executable: Summerwave takes that one file out of the archive and puts it under <code class="ic">bin/{package_name}@{version}/</code>. A few ship a directory instead — <code class="ic">git</code> needs <code class="ic">libexec/git-core</code> and <code class="ic">share/git-core/templates</code>, <code class="ic">fish</code> needs <code class="ic">share/fish</code>, <code class="ic">hx</code> needs <code class="ic">runtime/</code>. Those are <strong>tree packages</strong>.
-        </p>
-        <p style="font-size: 1.1rem; line-height: 1.6; opacity: 0.9;" data-i18n="installForm.tree">
-            You do not pick this: the index declares it with <code class="ic">install: "tree"</code> and <code class="ic">wave install</code> follows it. The whole directory is installed as-is, so tools that look for their data next to their own binary keep working — no <code class="ic">/opt/homebrew</code> paths, no rebuild on your machine.
-        </p>
-        <div class="code-container">
-            <pre><span class="code-dollar">$</span> wave install git
-<span class="code-dollar">$</span> ls <span class="code-dollar">$(</span>wave basedir<span class="code-dollar">)</span>/bin/git@2.56.1
-bin  libexec  share</pre>
-        </div>
-        <p style="font-size: 1.1rem; line-height: 1.6; opacity: 0.9;" data-i18n="installForm.multi">
-            If a tree carries more than one command, <strong>every</strong> executable in its <code class="ic">bin/</code> is linked: installing <code class="ic">dtc</code> gives you <code class="ic">dtc</code>, <code class="ic">fdtget</code>, <code class="ic">fdtput</code>, <code class="ic">fdtdump</code> and friends, and <code class="ic">testdisk</code> brings <code class="ic">photorec</code> with it. <code class="ic">wave unlink</code> takes them away together.
-        </p>
-        <p style="font-size: 1.1rem; line-height: 1.6; opacity: 0.9;" data-i18n="installForm.client">
-            Tree packages need Summerwave <strong>4.5</strong> or newer. Those records carry <code class="ic">min_client_version</code>, so an older client stops <em>before</em> downloading and tells you to run <code class="ic">wave selfupdate</code> — instead of quietly installing a single file out of the tree.
-        </p>
 
         <h2 style="font-size: 1.8rem; border-bottom: 2px solid #4a90e2; padding-bottom: 10px; margin-top: 40px;" data-i18n="symlink.title">Symlink Management</h2>
         <p style="font-size: 1.1rem; line-height: 1.6; opacity: 0.9;" data-i18n="symlink.intro">
@@ -1124,8 +1071,7 @@ bin  libexec  share</pre>
 
                 <h2 style="font-size: 1.8rem; border-bottom: 2px solid #4a90e2; padding-bottom: 10px; margin-top: 40px;" data-i18n="license.title">License</h2>
         <p style="font-size: 1.1rem; line-height: 1.6; opacity: 0.9;" data-i18n="license.body">
-            Releases up to and including <strong>4.5</strong> are licensed under the <strong>MIT License</strong>;
-            from <strong>4.6</strong> the project uses the <a href="LICENSE.txt"><strong>Apache License 2.0</strong></a>.
+            Summerwave is released under the <a href="LICENSE.txt"><strong>Apache License 2.0</strong></a>.
         </p>
 
     </div>
@@ -1136,15 +1082,15 @@ bin  libexec  share</pre>
         <div class="contact-items">
             <div class="contact-item">
                 <span class="contact-label">GitHub</span>
-                <a href="https://github.com/SummerwaveOrg" target="_blank">@SummerwaveOrg</a>
+                <a href="https://github.com/MacWaveOrg" target="_blank">@MacWaveOrg</a>
             </div>
             <div class="contact-item">
                 <span class="contact-label">Twitter</span>
-                <a href="https://twitter.com/SummerwaveOrg" target="_blank">@SummerwaveOrg</a>
+                <a href="https://twitter.com/MacWaveOrg" target="_blank">@MacWaveOrg</a>
             </div>
             <div class="contact-item">
                 <span class="contact-label">Email</span>
-                <a href="mailto:summerwaveorg@outlook.com">summerwaveorg@outlook.com</a>
+                <a href="mailto:macwaveorg@outlook.com">macwaveorg@outlook.com</a>
             </div>
         </div>
         <div class="contact-hint" data-i18n="contact.hint">Click the links to open.</div>
@@ -1161,7 +1107,7 @@ bin  libexec  share</pre>
             <p data-i18n="agreement.notice">
                 Using Summerwave means you accept the
                 <button class="lic-link" type="button" onclick="openAgreement()">User Agreement</button>
-                (last updated 2026-11-24, Summerwave 4.6.0). Read it in full before using Summerwave or
+                (last updated 2026-11-27, Summerwave 0.1.0). Read it in full before using Summerwave or
                 any of its software packages; if you do not accept it, do not use them.
             </p>
             <noscript>
