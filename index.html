@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>MacWave</title>
+    <title>Summerwave</title>
     <style>
         /* 与 Finx 一致：整页的左右留白只由一个变量决定，各档都是 20px。
            正文区自己还带 20px（见 .content-section 的内联 padding），所以手机上
@@ -31,29 +31,66 @@
             box-sizing: border-box;
         }
 
-        .logo-wrapper {
-            background-color: #ffffff;
-            border-radius: 30px;
-            padding: 12px 25px;
-            display: flex;
+        /* ===== 顶部 hero：居中品牌（logo 左 + 文字右），版式参考 brew.sh，配色沿用本站 ===== */
+        .hero {
+            width: 100%;
+            max-width: var(--column);
+            margin: 0 auto 44px;
+            padding: 0 20px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .hero__brand {
+            display: inline-flex;
+            flex-wrap: wrap;
             align-items: center;
             justify-content: center;
-            gap: 0;
-            margin-bottom: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            gap: clamp(14px, 2vw, 26px);
             max-width: 100%;
-            box-sizing: border-box;
         }
 
-        .logo-img {
-            height: 50px;
-            width: auto;
+        .hero__logo {
+            flex: 0 0 auto;
             display: block;
-            border-radius: 0;
+            width: auto;
+            height: auto;
+            max-width: 40vw;
+            max-height: clamp(72px, 9vw, 124px);
+            object-fit: contain;
+            filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.35));
         }
 
-        .logo-img.logo-3 {
-            display: none !important;
+        .hero__title {
+            margin: 0;
+            font-size: clamp(2.6rem, 5.8vw, 4.4rem);
+            font-weight: 400;
+            line-height: 1;
+            letter-spacing: -0.02em;
+            color: #ffffff;
+        }
+
+        .hero .tagline {
+            margin: 18px auto 0;
+            max-width: 34em;
+            text-align: center;
+            font-size: clamp(1.1rem, 1.7vw, 1.4rem);
+            line-height: 1.5;
+        }
+
+        .hero .version-block {
+            margin: 10px auto 26px;
+            color: #a0b0d0;
+            font-size: 0.95rem;
+            text-align: center;
+        }
+
+        .hero__actions {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 12px 22px;
         }
 
         /* ========== 电脑端版本号一行，有空格 ========== */
@@ -93,9 +130,9 @@
             box-shadow: 0 8px 20px rgba(255,255,255,0.2);
         }
 
-        .link-linuxwave,
         .link-docs,
-        .link-mirror {
+        .link-mirror,
+        .link-team {
             display: inline-block;
             color: #ffffff;
             text-decoration: none;
@@ -103,9 +140,9 @@
             font-size: 1rem;
         }
 
-        .link-linuxwave:hover,
         .link-docs:hover,
-        .link-mirror:hover {
+        .link-mirror:hover,
+        .link-team:hover {
             text-decoration: underline;
         }
 
@@ -305,34 +342,6 @@
             text-indent: -2em;
         }
 
-        .install-note {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            opacity: 0.9;
-            max-width: 800px;
-            text-align: left;
-            color: #ffffff;
-            margin-top: 0;
-            margin-bottom: 10px;
-            word-break: break-word;
-            overflow-wrap: break-word;
-        }
-        .install-note strong {
-            font-weight: bold;
-            color: #ffffff;
-        }
-        .install-note .small-link-text {
-            font-size: 0.825rem;
-            display: inline-block;
-        }
-        .install-note a {
-            color: #ffffff;
-            text-decoration: underline;
-        }
-        .install-note a:hover {
-            opacity: 0.8;
-        }
-
         /* 内容区限宽：小屏下不因长行（中文/内联代码）被撑宽 */
         .content-section {
             width: 100%;
@@ -364,19 +373,15 @@
 
         /* ========== 手机端 ========== */
         @media (max-width: 690.98px) {
-            .logo-img.logo-1,
-            .logo-img.logo-2 {
-                display: none !important;
+            .hero {
+                margin-bottom: 34px;
             }
-            .logo-img.logo-3 {
-                display: block !important;
-                width: auto;
-                height: auto;
-                max-height: 42px;
-                max-width: 100%;
+            .hero__logo {
+                max-width: 70vw;
+                max-height: 72px;
             }
-            .logo-wrapper {
-                padding: 4px 18px !important;
+            .hero .tagline {
+                margin-top: 14px;
             }
 
             .version-block .v-line {
@@ -391,8 +396,8 @@
                 text-align: center !important;
                 letter-spacing: 0 !important;
                 font-size: 0.95rem !important;
-                margin-top: -10px !important;
-                margin-bottom: 30px !important;
+                margin-top: 0 !important;
+                margin-bottom: 18px !important;
             }
 
             .tagline {
@@ -400,21 +405,10 @@
             }
         }
 
-        /* ===== 平板/窄屏：logo 按可用宽度等比缩小，避免横向溢出 ===== */
-        @media (min-width: 691px) and (max-width: 800px) {
-            .logo-img.logo-1,
-            .logo-img.logo-2 {
-                width: auto;
-                height: auto;
-                max-height: 50px;
-                min-width: 0;
-            }
-        }
-
         /* ===== 两栏：左侧录屏、右侧文字，窄屏叠成单列 =====
            写法同 brew.sh：grid + repeat(2, minmax(0, 1fr))，每格 min-width
            归零，否则 pre 里的长命令会把格子撑开，两栏就不等宽了。
-           「安装软件包」与「安装 MacWave」共用这一套。 */
+           「安装软件包」与「安装 Summerwave」共用这一套。 */
         .split2 {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -448,8 +442,12 @@
         /* ===== 支持的软件包：左右两列，按行从左到右（1 2 / 3 4 / …） ===== */
         .pkg-list {
             display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 6px 30px;
+            grid-template-columns: repeat(3, max-content);
+            justify-content: center;
+            width: fit-content;
+            max-width: 100%;
+            margin: 0 auto;
+            gap: 6px 28px;
             background-color: #1e2a4a;
             border: 1px solid #3a4a6a;
             border-radius: 12px;
@@ -465,8 +463,18 @@
             overflow-wrap: anywhere;
         }
 
+        /* 列数随屏宽：宽屏 3 列 → 中屏 2 列 → 手机 1 列 */
+        @media (max-width: 820px) {
+            .pkg-list {
+                grid-template-columns: repeat(2, max-content);
+            }
+        }
+
         @media (max-width: 560px) {
             .pkg-list {
+                grid-template-columns: 1fr;
+                justify-content: start;
+                width: 100%;
                 gap: 4px 8px;
                 padding: 14px;
                 font-size: 0.82rem;
@@ -759,7 +767,7 @@
                 <li><button class="lang__item" type="button" role="menuitemradio" data-lang="es">Español<span class="lang__check" aria-hidden="true">✓</span></button></li>
             </ul>
         </div>
-        <a class="lang__btn" id="docsBtn" href="https://docs.macwave.org" aria-label="Documentation" title="Documentation">
+        <a class="lang__btn" id="docsBtn" href="https://docs.summerwave.org" aria-label="Documentation" title="Documentation">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path>
                 <path d="M14 3v5h5"></path>
@@ -773,7 +781,7 @@
                 <path d="M12 6.5v13"></path>
             </svg>
         </a>
-        <a class="lang__btn" id="socialBtn" href="https://social.macwave.org" aria-label="MacWave community" title="MacWave community">
+        <a class="lang__btn" id="socialBtn" href="https://social.summerwave.org" aria-label="Summerwave community" title="Summerwave community">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M4 3.5H11.5A2.5 2.5 0 0 1 14 6V10.5A2.5 2.5 0 0 1 11.5 13H7.4L4.8 15.4V13H3.5A2.5 2.5 0 0 1 1 10.5V6A2.5 2.5 0 0 1 3.5 3.5Z"/>
                 <path d="M12.5 9H19.5A2.5 2.5 0 0 1 22 11.5V16A2.5 2.5 0 0 1 19.5 18.5V20.6L16.9 18.5H12.5A2.5 2.5 0 0 1 10 16V11.5A2.5 2.5 0 0 1 12.5 9Z"/>
@@ -781,54 +789,50 @@
         </a>
     </div>
 
-    <div class="logo-wrapper">
-        <img src="logo1.jpg" alt="MW Icon" class="logo-img logo-1">
-        <img src="logo2.jpg" alt="MacWave Text" class="logo-img logo-2">
-        <img src="logo3.jpg" alt="MacWave Logo" class="logo-img logo-3">
-    </div>
+    <header class="hero">
+        <div class="hero__brand">
+            <img src="images/logo.png" alt="Summerwave" class="hero__logo" width="512" height="512">
+            <h1 class="hero__title">Summerwave</h1>
+        </div>
+        <p class="tagline" data-i18n="hero.tagline">A package manager for macOS, built for the command-line tools macOS developers rely on.</p>
 
-    <p class="tagline" style="max-width:800px;" data-i18n="hero.tagline">A package manager for macOS, built for the command-line tools macOS developers rely on.</p>
+        <div class="version-block" data-i18n="version.block">
+            <span class="v-line">Latest Version : 4.6.0</span>
+            <span class="v-line">Release on 2026-11-24</span>
+        </div>
 
-    <div class="version-block" style="color: #a0b0d0; font-size: 0.95rem; margin-top: -10px; margin-bottom: 30px;" data-i18n="version.block">
-        <span class="v-line">Latest Version : 4.6.0</span>
-        <span class="v-line">Release on 2026-11-24</span>
-    </div>
-
-    <a href="https://github.com/MacWaveOrg/MacWave/releases" class="btn-github" data-i18n="github.button">View On GitHub</a>
-
-    <div style="margin-top: 2em;"></div>
-    <div style="text-align: center; margin-bottom: 1.2em;">
-        <a href="https://linuxwave.org" class="link-linuxwave" data-i18n="linuxwave.link">Linux? View LinuxWave &rarr;</a>
-    </div>
-    <div style="text-align: center; font-size: 1.2rem; font-weight: bold;">
-        <a href="https://sw.macwave.org" style="color: #ffffff; text-decoration: none;" data-i18n="team.link">Explore MacWave Team</a>
-    </div>
+        <div class="hero__actions">
+            <a href="https://github.com/SummerwaveOrg/Summerwave/releases" class="btn-github" data-i18n="github.button">View On GitHub</a>
+            <a href="https://sw.summerwave.org" class="link-team" data-i18n="team.link">Explore Summerwave Team</a>
+        </div>
+    </header>
 
     <div class="content-section" style="padding: 20px; color: #ffffff; text-align: left;">
 
-        <h2 style="font-size: 1.8rem; border-bottom: 2px solid #4a90e2; padding-bottom: 10px;" data-i18n="about.title">About MacWave</h2>
+        <h2 style="font-size: 1.8rem; border-bottom: 2px solid #4a90e2; padding-bottom: 10px;" data-i18n="about.title">About Summerwave</h2>
         <p style="font-size: 1.1rem; line-height: 1.6; opacity: 0.9;" data-i18n="about.intro">
-            <strong>MacWave</strong> is a <strong>package manager for macOS</strong>, built to distribute the <strong>command-line tools</strong> that <strong>macOS software developers</strong> rely on. Its project, <strong>LinuxWave</strong>, covers Linux.
+            <strong>Summerwave</strong> is a <strong>package manager for macOS</strong>, built to distribute the <strong>command-line tools</strong> that <strong>macOS software developers</strong> rely on. Its project, <strong>LinuxWave</strong>, covers Linux.
         </p>
 
-        <h2 style="font-size: 1.8rem; border-bottom: 2px solid #4a90e2; padding-bottom: 10px; margin-top: 40px;" data-i18n="why.title">Why MacWave</h2>
+        <h2 style="font-size: 1.8rem; border-bottom: 2px solid #4a90e2; padding-bottom: 10px; margin-top: 40px;" data-i18n="why.title">Why Summerwave</h2>
         <ul style="font-size: 1.1rem; line-height: 1.8; opacity: 0.9; padding-left: 1.2em;" data-i18n="why.items">
             <li><strong>Small on disk.</strong> The installer fetches individual files rather than cloning the repository, and there is no package cache to keep in sync.</li>
             <li><strong>One command per package.</strong> Common tools are installed by name, without hunting for release pages.</li>
             <li><strong>Versioned by design.</strong> Every binary lives under <code class="ic">package@version</code>, so several versions coexist and none of them shadow a system tool.</li>
             <li><strong>Optional unversioned links.</strong> <code class="ic">wave link &lt;package&gt;</code> creates a plain <code class="ic">package</code> shortcut that points at the highest installed version and re-points itself whenever versions are installed or removed.</li>
-            <li><strong>Isolated by construction.</strong> Everything MacWave installs stays inside its own directories; it never overwrites or links against macOS system libraries, so even a major macOS upgrade leaves it intact.</li>
-            <li><strong>No stale metadata.</strong> Package data is read from the <code class="ic">MacWaveOrg/infosource</code> repository at request time.</li>
+            <li><strong>Isolated by construction.</strong> Everything Summerwave installs stays inside its own directories; it never overwrites or links against macOS system libraries, so even a major macOS upgrade leaves it intact.</li>
+            <li><strong>No stale metadata.</strong> Package data is read from the <code class="ic">SummerwaveOrg/infosource</code> repository at request time.</li>
             <li><strong>Ten archive formats, covered by CI.</strong> Extensionless binaries, <code class="ic">.zip</code>, <code class="ic">.tar.gz</code>, <code class="ic">.tar.bz2</code>, <code class="ic">.tar.xz</code>, <code class="ic">.tar</code>, <code class="ic">.gz</code>, <code class="ic">.xz</code>, <code class="ic">.bz2</code>, and <code class="ic">.conda</code>.</li>
             <li><strong>Checksum before extraction.</strong> A package whose SHA256 is missing or does not match is refused, never installed with a warning.</li>
             <li><strong>Resumable downloads.</strong> An interrupted transfer continues with <code class="ic">-C</code>.</li>
             <li><strong>Transparent implementation.</strong> Python and Shell only. The interpreter is bundled, so no runtime has to be installed and no behaviour is hidden behind one.</li>
-            <li><strong>Dependencies handled for you.</strong> Packages that need libraries declare them; MacWave installs, tracks and removes those libraries by reference count.</li>
+            <li><strong>Dependencies handled for you.</strong> Packages that need libraries declare them; Summerwave installs, tracks and removes those libraries by reference count.</li>
         </ul>
 
         <h2 style="font-size: 1.8rem; border-bottom: 2px solid #4a90e2; padding-bottom: 10px; margin-top: 40px;" data-i18n="supportedOs.title">Supported macOS Version</h2>
         <p style="font-size: 1.1rem; line-height: 1.6; opacity: 1; font-weight: bold; color: #ffffff;" data-i18n="supportedOs.value">
-            macOS Monterey 12 and above
+            Intel: macOS Monterey 12 and above<br>
+            Apple Silicon: macOS Sequoia 15 and above
         </p>
 
         <h2 style="font-size: 1.8rem; border-bottom: 2px solid #4a90e2; padding-bottom: 10px; margin-top: 40px;" data-i18n="install.title">Install Summerwave</h2>
@@ -843,7 +847,7 @@
                     <div class="square-front"></div>
                 </div>
             </button>
-            <pre><span class="code-dollar">$</span> /bin/bash -c "$(curl -fsSL https://github.com/MacWaveOrg/MacWave/releases/latest/download/install.sh)"</pre>
+            <pre><span class="code-dollar">$</span> /bin/bash -c "$(curl -fsSL https://github.com/SummerwaveOrg/Summerwave/releases/latest/download/install.sh)"</pre>
         </div>
         <p class="env-requirements" data-i18n="install.target">
             It installs into <code class="ic">/opt/macwave</code>, the system-wide location (one administrator password, entered once).
@@ -877,10 +881,9 @@
             </div>
         </div>
 
-        <h3 style="font-size: 1.35rem; margin-top: 32px; margin-bottom: 12px;" data-i18n="unattended.title">Unattended install</h3>
-
-        <p style="font-size: 1.1rem; line-height: 1.6; opacity: 0.9;" data-i18n="unattended.intro">
-            For scripts and batch use, the installer takes flags so it never waits for input. Options go after <code class="ic">--</code>, which ends bash&rsquo;s own options:
+        <h2 style="font-size: 1.8rem; border-bottom: 2px solid #4a90e2; padding-bottom: 10px; margin-top: 40px;" data-i18n="uninstall.title">Uninstall Summerwave</h2>
+        <p style="font-size: 1.1rem; line-height: 1.6; opacity: 0.9;" data-i18n="uninstall.body">
+            To completely remove Summerwave from your system, run the following command in your terminal:
         </p>
         <div class="code-container has-copy-btn">
             <button class="copy-btn" onclick="copyCode(this)">
@@ -889,72 +892,11 @@
                     <div class="square-front"></div>
                 </div>
             </button>
-            <pre># straight from the repository
-<span class="code-dollar">$</span> /bin/bash -c "$(curl -fsSL https://github.com/MacWaveOrg/MacWave/releases/latest/download/install.sh)" \
-  -- --ci --dir-option=1</pre>
+            <pre><span class="code-dollar">$</span> /bin/bash -c "$(curl -fsSL https://github.com/SummerwaveOrg/Summerwave/releases/latest/download/uninstall.sh)"</pre>
         </div>
-        <p style="font-size: 1.1rem; line-height: 1.6; opacity: 0.9;" data-i18n="unattended.flags">
-            <code class="ic">--ci</code> (same as <code class="ic">--CI</code>) asks nothing: no confirmation, no
-            questions. Without <code class="ic">--dir-option</code> it installs into <code class="ic">~/.local/macwave</code>,
-            because an unattended run must not stop for an administrator password; add <code class="ic">--dir-option=1</code>
-            for <code class="ic">/opt/macwave</code>, which then needs passwordless sudo (or root).
-            <code class="ic">--dir-option=N</code> picks the install location: <code class="ic">1</code> is
-            <code class="ic">/opt/macwave</code>, <code class="ic">2</code> is <code class="ic">~/.local/macwave</code>,
-            <code class="ic">3</code> is <code class="ic">/usr/local/macwave</code> on Intel, and the last number is the
-            custom entry — append the path after <code class="ic">=</code>, as in
-            <code class="ic">--dir-option=3=/opt/my-summerwave</code>.
-            <code class="ic">--zh</code> and <code class="ic">--en</code> force Chinese or English output; without them the
-            installer follows <code class="ic">LC_ALL</code> / <code class="ic">LANG</code> and the macOS preferred
-            language, so a Chinese machine is spoken to in Chinese by default.
-            <code class="ic">--dry-run</code> walks every step and prints it without downloading, asking for a password or
-            writing a byte. <code class="ic">--raw</code> drops the ASCII art, colour and spinner (one
-            <code class="ic">####</code> line per 10% of a download) for logs. <code class="ic">--print-usage</code>
-            prints usage and installs anyway; <code class="ic">--skip-probe</code> skips the write probe and goes by
-            permission bits alone; <code class="ic">--help</code> prints usage and stops without touching the network.
-            Run <code class="ic">install.sh --help</code> for the list.
-        </p>
-
-        <p class="install-note" data-i18n="unattended.position">
-            <strong>Mind where the options go.</strong> Writing <code class="ic">/bin/bash -c "$(curl ...)" --ci</code> makes <code class="ic">--ci</code> the script name (<code class="ic">$0</code>), so it is silently dropped; the installer warns when it detects this. The working form puts the options after <code class="ic">--</code>.
-        </p>
-
-        <h2 style="font-size: 1.8rem; border-bottom: 2px solid #4a90e2; padding-bottom: 10px; margin-top: 40px;" data-i18n="verify.title">Verify your download</h2>
-
-        <p style="font-size: 1.1rem; line-height: 1.6; opacity: 0.9;" data-i18n="verify.intro">
-            Every release ships <code class="ic">SHA256SUMS</code> (the checksums of every asset) and
-            <code class="ic">SHA256SUMS.asc</code> (its detached signature). Two commands confirm that the
-            bytes you have are the bytes we published:
-        </p>
-        <div class="code-container has-copy-btn">
-            <button class="copy-btn" onclick="copyCode(this)">
-                <div class="copy-icon">
-                    <div class="square-back"></div>
-                    <div class="square-front"></div>
-                </div>
-            </button>
-            <pre><span class="code-dollar">$</span> gpg --verify SHA256SUMS.asc SHA256SUMS
-<span class="code-dollar">$</span> shasum -a 256 -c SHA256SUMS</pre>
-        </div>
-
-        <p style="margin: 10px 0 0 0; font-size: 1rem; line-height: 1.5; color: #a0b0d0;" data-i18n="verify.fingerprint">
-            Signing key fingerprint:<br>
-            <code class="ic">7220E218 395D E865 AACC 3391 67F1 4E52 D0E2 29FB</code><br>
-            Compare it against the copy in the repository (<code class="ic">Keys/description.md</code>, next to the public keys) and the
-            release notes before trusting a key you imported.
-        </p>
-
-        <p style="margin: 10px 0 0 0; font-size: 1rem; line-height: 1.5; color: #a0b0d0; font-style: italic;" data-i18n="verify.selfupdate">
-            Summerwave checks its own updates too, and since 4.7 that check is <strong>mandatory</strong>: the
-            version pointer must carry a signature from the project's key, and a missing or wrong signature
-            <strong>stops the installation</strong> instead of warning. The reason is that this pointer decides which
-            version and which code branch get installed — if it could be swapped, checking every downloaded file
-            against it would be pointless, because the list could be swapped along with it.
-            <code class="ic">MACWAVE_ALLOW_UNSIGNED=1</code> exists for mirror bootstrap and test rigs only; do not set
-            it on a machine you care about.
-        </p>
 
         <p style="font-size: 1.1rem; line-height: 1.6; opacity: 0.9;" data-i18n="verify.uninstallScript">
-            <code class="ic">uninstall.sh</code> is scriptable in the same way: <code class="ic">--force</code> skips the confirmation, which otherwise needs a terminal (use <code class="ic">--force</code> in CI):
+            <code class="ic">uninstall.sh</code> is scriptable: <code class="ic">--force</code> skips the confirmation, which otherwise needs a terminal (use <code class="ic">--force</code> in CI):
         </p>
         <div class="code-container has-copy-btn">
             <button class="copy-btn" onclick="copyCode(this)">
@@ -963,39 +905,13 @@
                     <div class="square-front"></div>
                 </div>
             </button>
-            <pre><span class="code-dollar">$</span> /bin/bash -c "$(curl -fsSL https://github.com/MacWaveOrg/MacWave/releases/latest/download/uninstall.sh)" -- --force</pre>
-        </div>
-
-        <h2 style="font-size: 1.8rem; border-bottom: 2px solid #4a90e2; padding-bottom: 10px; margin-top: 40px;" data-i18n="uninstall.title">Uninstall MacWave</h2>
-        <p style="font-size: 1.1rem; line-height: 1.6; opacity: 0.9;" data-i18n="uninstall.body">
-            To completely remove MacWave from your system, run the following command in your terminal:
-        </p>
-        <div class="code-container has-copy-btn">
-            <button class="copy-btn" onclick="copyCode(this)">
-                <div class="copy-icon">
-                    <div class="square-back"></div>
-                    <div class="square-front"></div>
-                </div>
-            </button>
-            <pre><span class="code-dollar">$</span> /bin/bash -c "$(curl -fsSL https://github.com/MacWaveOrg/MacWave/releases/latest/download/uninstall.sh)"</pre>
+            <pre><span class="code-dollar">$</span> /bin/bash -c "$(curl -fsSL https://github.com/SummerwaveOrg/Summerwave/releases/latest/download/uninstall.sh)" -- --force</pre>
         </div>
 
         <h2 style="font-size: 1.8rem; border-bottom: 2px solid #4a90e2; padding-bottom: 10px; margin-top: 40px;" data-i18n="dirs.title">Download Directory</h2>
-        <p style="font-size: 1.1rem; line-height: 1.6; opacity: 0.9;" data-i18n="dirs.binaries">
-            The installer goes to <code class="ic">/opt/macwave</code>. These are the alternatives, chosen with <code class="ic">--dir-option</code>:
-        </p>
         <div class="code-container">
-            <pre>1. /opt/macwave                default
-2. ~/.local/macwave            this user only, no password
-3. /usr/local/macwave          Intel Macs only
-4. a directory of your own     --dir-option=4=/some/dir  (3 on Apple silicon)</pre>
-        </div>
-        <p style="font-size: 1.1rem; line-height: 1.6; opacity: 0.9;" data-i18n="dirs.config">
-            Config file is stored in (a system-level install always takes priority):
-        </p>
-        <div class="code-container">
-            <pre>1. /opt/macwave_config          system-level install
-2. ~/.config/macwave_config     user-level install</pre>
+            <pre>macOS: /opt/macwave
+Linux: /home/linuxwave/.linuxwave</pre>
         </div>
 
         <h2 style="font-size: 1.8rem; border-bottom: 2px solid #4a90e2; padding-bottom: 10px; margin-top: 40px;" data-i18n="pkgInstall.title">Install Packages</h2>
@@ -1042,7 +958,7 @@
 
         <h2 style="font-size: 1.8rem; border-bottom: 2px solid #4a90e2; padding-bottom: 10px; margin-top: 40px;" data-i18n="installForm.title">Two Install Forms: One File or a Whole Tree</h2>
         <p style="font-size: 1.1rem; line-height: 1.6; opacity: 0.9;" data-i18n="installForm.intro">
-            Most packages are a single executable: MacWave takes that one file out of the archive and puts it under <code class="ic">bin/{package_name}@{version}/</code>. A few ship a directory instead — <code class="ic">git</code> needs <code class="ic">libexec/git-core</code> and <code class="ic">share/git-core/templates</code>, <code class="ic">fish</code> needs <code class="ic">share/fish</code>, <code class="ic">hx</code> needs <code class="ic">runtime/</code>. Those are <strong>tree packages</strong>.
+            Most packages are a single executable: Summerwave takes that one file out of the archive and puts it under <code class="ic">bin/{package_name}@{version}/</code>. A few ship a directory instead — <code class="ic">git</code> needs <code class="ic">libexec/git-core</code> and <code class="ic">share/git-core/templates</code>, <code class="ic">fish</code> needs <code class="ic">share/fish</code>, <code class="ic">hx</code> needs <code class="ic">runtime/</code>. Those are <strong>tree packages</strong>.
         </p>
         <p style="font-size: 1.1rem; line-height: 1.6; opacity: 0.9;" data-i18n="installForm.tree">
             You do not pick this: the index declares it with <code class="ic">install: "tree"</code> and <code class="ic">wave install</code> follows it. The whole directory is installed as-is, so tools that look for their data next to their own binary keep working — no <code class="ic">/opt/homebrew</code> paths, no rebuild on your machine.
@@ -1056,12 +972,12 @@ bin  libexec  share</pre>
             If a tree carries more than one command, <strong>every</strong> executable in its <code class="ic">bin/</code> is linked: installing <code class="ic">dtc</code> gives you <code class="ic">dtc</code>, <code class="ic">fdtget</code>, <code class="ic">fdtput</code>, <code class="ic">fdtdump</code> and friends, and <code class="ic">testdisk</code> brings <code class="ic">photorec</code> with it. <code class="ic">wave unlink</code> takes them away together.
         </p>
         <p style="font-size: 1.1rem; line-height: 1.6; opacity: 0.9;" data-i18n="installForm.client">
-            Tree packages need MacWave <strong>4.5</strong> or newer. Those records carry <code class="ic">min_client_version</code>, so an older client stops <em>before</em> downloading and tells you to run <code class="ic">wave selfupdate</code> — instead of quietly installing a single file out of the tree.
+            Tree packages need Summerwave <strong>4.5</strong> or newer. Those records carry <code class="ic">min_client_version</code>, so an older client stops <em>before</em> downloading and tells you to run <code class="ic">wave selfupdate</code> — instead of quietly installing a single file out of the tree.
         </p>
 
         <h2 style="font-size: 1.8rem; border-bottom: 2px solid #4a90e2; padding-bottom: 10px; margin-top: 40px;" data-i18n="symlink.title">Symlink Management</h2>
         <p style="font-size: 1.1rem; line-height: 1.6; opacity: 0.9;" data-i18n="symlink.intro">
-            Since MacWave 2.4, once a versionless link exists, MacWave keeps it pointing at the right version on its own:
+            Since Summerwave 2.4, once a versionless link exists, Summerwave keeps it pointing at the right version on its own:
         </p>
         <ol style="font-size: 1.1rem; line-height: 1.8; opacity: 0.9; padding-left: 1.6em;" data-i18n="symlink.rules">
             <li>If the highest version is uninstalled, the versionless link moves to the highest version that remains, and the uninstalled version's own link goes with it.</li>
@@ -1081,7 +997,7 @@ bin  libexec  share</pre>
 
         <h2 style="font-size: 1.8rem; border-bottom: 2px solid #4a90e2; padding-bottom: 10px; margin-top: 40px;" data-i18n="dev.title">For Developers</h2>
         <p style="font-size: 1.1rem; line-height: 1.6;" data-i18n="dev.body">
-            See <a href="https://docs.macwave.org" class="link-docs" target="_blank" rel="noopener">docs.macwave.org</a>
+            See <a href="https://docs.summerwave.org" class="link-docs" target="_blank" rel="noopener">docs.summerwave.org</a>
         </p>
 
 <h2 style="font-size: 1.8rem; border-bottom: 2px solid #4a90e2; padding-bottom: 10px; margin-top: 40px;" data-i18n="supported.title">Supported Packages</h2>
@@ -1220,15 +1136,15 @@ bin  libexec  share</pre>
         <div class="contact-items">
             <div class="contact-item">
                 <span class="contact-label">GitHub</span>
-                <a href="https://github.com/MacWaveOrg" target="_blank">@MacWaveOrg</a>
+                <a href="https://github.com/SummerwaveOrg" target="_blank">@SummerwaveOrg</a>
             </div>
             <div class="contact-item">
                 <span class="contact-label">Twitter</span>
-                <a href="https://twitter.com/MacWaveOrg" target="_blank">@MacWaveOrg</a>
+                <a href="https://twitter.com/SummerwaveOrg" target="_blank">@SummerwaveOrg</a>
             </div>
             <div class="contact-item">
                 <span class="contact-label">Email</span>
-                <a href="mailto:macwaveorg@outlook.com">macwaveorg@outlook.com</a>
+                <a href="mailto:summerwaveorg@outlook.com">summerwaveorg@outlook.com</a>
             </div>
         </div>
         <div class="contact-hint" data-i18n="contact.hint">Click the links to open.</div>
@@ -1243,9 +1159,9 @@ bin  libexec  share</pre>
     <div class="disclaimer-container" id="agreement">
         <div class="disclaimer">
             <p data-i18n="agreement.notice">
-                Using MacWave means you accept the
+                Using Summerwave means you accept the
                 <button class="lic-link" type="button" onclick="openAgreement()">User Agreement</button>
-                (last updated 2026-11-24, MacWave 4.6.0). Read it in full before using MacWave or
+                (last updated 2026-11-24, Summerwave 4.6.0). Read it in full before using Summerwave or
                 any of its software packages; if you do not accept it, do not use them.
             </p>
             <noscript>
@@ -1301,8 +1217,8 @@ bin  libexec  share</pre>
          */
         const AGREEMENT_SOURCES = [
             'agreement/',
-            'https://raw.githubusercontent.com/MacWaveOrg/Pages/HEAD/agreement/',
-            'https://fastly.jsdelivr.net/gh/MacWaveOrg/Pages@main/agreement/'
+            'https://raw.githubusercontent.com/SummerwaveOrg/Pages/HEAD/agreement/',
+            'https://fastly.jsdelivr.net/gh/SummerwaveOrg/Pages@main/agreement/'
         ];
 
         /* 各语言对应的协议文件；译本取不到时统一回落到英文原件。 */
@@ -1467,7 +1383,7 @@ bin  libexec  share</pre>
                 ? 'foreword/foreword-zh'
                 : 'foreword/foreword';
 
-            const socialLabel = dict['community.title'] || 'MacWave community';
+            const socialLabel = dict['community.title'] || 'Summerwave community';
             socialBtn.setAttribute('aria-label', socialLabel);
             socialBtn.title = socialLabel;
 
